@@ -9,7 +9,8 @@ export default function TicTacToe() {
   const { t } = useI18n();
   const [board, setBoard] = useState<Board>(Array(9).fill(''));
   const [currentPlayer, setCurrentPlayer] = useState<Player>('X');
-  const [gameStatus, setGameStatus] = useState('');
+  const [gameStatus, setGameStatus] = useState<'win' | 'draw' | ''>('');
+  const [winningPlayer, setWinningPlayer] = useState<Player>('');
   const [isGameOver, setIsGameOver] = useState(false);
 
   const checkWinner = (boardToCheck: Board): Player => {
@@ -95,10 +96,11 @@ export default function TicTacToe() {
     
     const winner = checkWinner(newBoard);
     if (winner) {
-      setGameStatus(`Player ${winner} wins!`);
+      setGameStatus('win');
+      setWinningPlayer(winner);
       setIsGameOver(true);
     } else if (isBoardFull(newBoard)) {
-      setGameStatus("It's a draw!");
+      setGameStatus('draw');
       setIsGameOver(true);
     } else {
       setCurrentPlayer('X');
@@ -116,14 +118,15 @@ export default function TicTacToe() {
     
     const winner = checkWinner(newBoard);
     if (winner) {
-      setGameStatus(`Player ${winner} wins!`);
+      setGameStatus('win');
+      setWinningPlayer(winner);
       setIsGameOver(true);
       setBoard(newBoard);
       return;
     }
     
     if (isBoardFull(newBoard)) {
-      setGameStatus("It's a draw!");
+      setGameStatus('draw');
       setIsGameOver(true);
       setBoard(newBoard);
       return;
@@ -163,7 +166,11 @@ export default function TicTacToe() {
           <span className="current-player-label">{t('currentPlayerLabel')}</span>
           <span className="current-player">{currentPlayer}</span>
         </div>
-        {gameStatus && <div className="game-status">{gameStatus}</div>}
+        {gameStatus && (
+          <div className="game-status">
+            {gameStatus === 'win' ? t('gameWin', winningPlayer) : t('gameDraw')}
+          </div>
+        )}
         
         <div className="game-board">
           {board.map((cell, index) => (

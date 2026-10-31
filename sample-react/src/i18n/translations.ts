@@ -67,6 +67,8 @@ export const translations = {
     ticTacToeTitle: "Tic Tac Toe",
     ticTacToeSubtitle: "Play against AI",
     currentPlayerLabel: "Current Player:",
+    gameWin: "Player {0} wins!",
+    gameDraw: "It's a draw!",
     resetGameButton: "Reset Game",
     computerStartsButton: "Computer Starts",
     
@@ -144,6 +146,8 @@ export const translations = {
     ticTacToeTitle: "Tic Tac Toe",
     ticTacToeSubtitle: "Gegen KI spielen",
     currentPlayerLabel: "Aktueller Spieler:",
+    gameWin: "Spieler {0} gewinnt!",
+    gameDraw: "Unentschieden!",
     resetGameButton: "Spiel zurücksetzen",
     computerStartsButton: "Computer beginnt",
     
