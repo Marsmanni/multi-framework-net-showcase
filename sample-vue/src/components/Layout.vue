@@ -77,5 +77,8 @@ onMounted(async () => {
     <main class="app-main">
       <RouterView />
     </main>
+    <footer class="app-footer">
+      <a href="/">UI Showcase</a> · <a href="https://24steps.com" target="_blank" rel="noopener noreferrer">24steps.com</a>
+    </footer>
   </div>
 </template>

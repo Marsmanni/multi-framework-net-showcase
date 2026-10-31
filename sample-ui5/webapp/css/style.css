@@ -22,3 +22,14 @@
 .sunIconColor .sapUiIcon {
 	color: #FF9800 !important;
 }
+
+.appFooter {
+	padding: 0.5rem;
+	text-align: center;
+	font-size: 0.75rem;
+	opacity: 0.7;
+}
+
+.appFooter a {
+	color: inherit;
+}

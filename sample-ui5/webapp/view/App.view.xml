@@ -40,4 +40,6 @@
 
 	<App id="idApp" />
 
+	<core:HTML content='&lt;footer class="appFooter"&gt;&lt;a href="/"&gt;UI Showcase&lt;/a&gt; · &lt;a href="https://24steps.com" target="_blank" rel="noopener noreferrer"&gt;24steps.com&lt;/a&gt;&lt;/footer&gt;' />
+
 </mvc:View>

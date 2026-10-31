@@ -97,6 +97,9 @@ export default function Layout() {
       <main className="app-main">
         <Outlet />
       </main>
+      <footer className="app-footer">
+        <a href="/">UI Showcase</a> · <a href="https://24steps.com" target="_blank" rel="noopener noreferrer">24steps.com</a>
+      </footer>
     </div>
   );
 }

@@ -130,6 +130,10 @@
     </section>
   </main>
 
+  <footer class="app-footer">
+    <a href="/">UI Showcase</a> · <a href="https://24steps.com" target="_blank" rel="noopener noreferrer">24steps.com</a>
+  </footer>
+
   <div *ngIf="isTaskDialogOpen" class="dialog-backdrop" (click)="closeTaskDialog()">
     <section class="dialog card" role="dialog" aria-modal="true" [attr.aria-label]="editingTask ? t('editTaskDialogTitle') : t('createTaskDialogTitle')" (click)="$event.stopPropagation()">
       <div class="dialog-heading">
