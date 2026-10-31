@@ -369,3 +369,5 @@ FodyWeavers.xsd
 !**/.env.*.example
 **/appsettings.[Ll]ocal.json
 **/appsettings.*.[Ll]ocal.json
+# Backslash-named artifacts from Visual Studio JS projects (invalid paths on Windows)
+*\\*
