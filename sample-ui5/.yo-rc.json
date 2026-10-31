@@ -1,0 +1,20 @@
+{
+  "generator-ui5-ts-app": {
+    "namespace": "com.24steps.ui5sample",
+    "framework": "OpenUI5",
+    "frameworkVersion": "1.143.0",
+    "author": "Marsmanni",
+    "tstypes": "@openui5/types",
+    "tstypesVersion": "1.143.0",
+    "appId": "com.24steps.ui5sample",
+    "appURI": "com/24steps/ui5sample",
+    "cdnDomain": "sdk.openui5.org",
+    "defaultTheme": "sap_horizon",
+    "gte1_98_0": true,
+    "gte1_104_0": true,
+    "gte1_115_0": true,
+    "gte1_120_0": true,
+    "lt1_124_0": false,
+    "setupCompleted": true
+  }
+}

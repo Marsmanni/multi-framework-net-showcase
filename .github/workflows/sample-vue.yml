@@ -1,0 +1,90 @@
+name: Build and deploy sample-vue via SFTP
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - sample-vue/**
+      - .github/workflows/sample-vue.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  SOURCE_PATH: sample-vue
+  BUILD_PATH: sample-vue/dist
+  ARTIFACT_NAME: sample-vue-dist
+  SFTP_TARGET_DIR: apps/sample-vue
+  SFTP_PORT: "22"
+  NODE_VERSION: "22"
+
+jobs:
+  build:
+    name: Build sample-vue
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install dependencies
+        working-directory: ${{ env.SOURCE_PATH }}
+        run: npm ci
+
+      - name: Build project
+        working-directory: ${{ env.SOURCE_PATH }}
+        run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.BUILD_PATH }}
+          if-no-files-found: error
+
+  deploy:
+    name: Deploy sample-vue
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      SFTP_USER: ${{ secrets.SFTP_USER }}
+      SFTP_HOST: ${{ secrets.SFTP_HOST }}
+      SFTP_PASSWORD: ${{ secrets.SFTP_PASSWORD }}
+      SFTP_KNOWN_HOSTS: ${{ secrets.SFTP_KNOWN_HOSTS }}
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ${{ env.BUILD_PATH }}
+
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+
+      - name: Deploy files over verified SFTP host
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "$SFTP_USER" || -z "$SFTP_PASSWORD" || -z "$SFTP_KNOWN_HOSTS" ]]; then
+            echo "::error::Configure the SFTP_USER, SFTP_PASSWORD, and SFTP_KNOWN_HOSTS GitHub secrets."
+            exit 1
+          fi
+
+          install -d -m 700 "$HOME/.ssh"
+          printf '%s\n' "$SFTP_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/known_hosts"
+
+          SSHPASS="$SFTP_PASSWORD" sshpass -e scp \
+            -P "$SFTP_PORT" \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            -r "$BUILD_PATH"/. \
+            "$SFTP_USER@$SFTP_HOST:$SFTP_TARGET_DIR/"

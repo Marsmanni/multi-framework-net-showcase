@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <PackageJsonName Condition="$(PackageJsonName) == ''">com.24steps.ui5sample</PackageJsonName>
+    <PackageJsonVersion Condition="$(PackageJsonVersion) == ''">1.0.0</PackageJsonVersion>
+    <PackageJsonDescription Condition="$(PackageJsonDescription) == ''">UI5 Application: com.24steps.ui5sample</PackageJsonDescription>
+    <PackageJsonAuthor Condition="$(PackageJsonAuthor) == ''">Marsmanni</PackageJsonAuthor>
+    <PackageJsonLicense Condition="$(PackageJsonLicense) == ''">Apache-2.0</PackageJsonLicense>
+    <PackageJsonScriptsClean Condition="$(PackageJsonScriptsClean) == ''">rimraf dist coverage</PackageJsonScriptsClean>
+    <PackageJsonScriptsBuild Condition="$(PackageJsonScriptsBuild) == ''">ui5 build --clean-dest</PackageJsonScriptsBuild>
+    <PackageJsonScriptsBuildOpt Condition="$(PackageJsonScriptsBuildOpt) == ''">ui5 build self-contained --clean-dest --all</PackageJsonScriptsBuildOpt>
+    <PackageJsonScriptsStart Condition="$(PackageJsonScriptsStart) == ''">ui5 serve --port 8080 -o index.html</PackageJsonScriptsStart>
+    <PackageJsonScriptsStartCdn Condition="$(PackageJsonScriptsStartCdn) == ''">ui5 serve --port 8080 -o index-cdn.html</PackageJsonScriptsStartCdn>
+    <PackageJsonScriptsStartCoverage Condition="$(PackageJsonScriptsStartCoverage) == ''">ui5 serve --port 8080 --config ui5-coverage.yaml</PackageJsonScriptsStartCoverage>
+    <PackageJsonScriptsStartDist Condition="$(PackageJsonScriptsStartDist) == ''">npm start -- --config ui5-dist.yaml</PackageJsonScriptsStartDist>
+    <PackageJsonScriptsStartDistCdn Condition="$(PackageJsonScriptsStartDistCdn) == ''">npm run start-cdn -- --config ui5-dist.yaml</PackageJsonScriptsStartDistCdn>
+    <PackageJsonScriptsTsTypecheck Condition="$(PackageJsonScriptsTsTypecheck) == ''">tsc --noEmit</PackageJsonScriptsTsTypecheck>
+    <PackageJsonScriptsLint Condition="$(PackageJsonScriptsLint) == ''">eslint webapp</PackageJsonScriptsLint>
+    <PackageJsonScriptsUi5lint Condition="$(PackageJsonScriptsUi5lint) == ''">ui5lint</PackageJsonScriptsUi5lint>
+    <PackageJsonScriptsTestRunner Condition="$(PackageJsonScriptsTestRunner) == ''">ui5-test-runner --url http://localhost:8080/test/testsuite.qunit.html</PackageJsonScriptsTestRunner>
+    <PackageJsonScriptsTestRunnerCoverage Condition="$(PackageJsonScriptsTestRunnerCoverage) == ''">ui5-test-runner --url http://localhost:8080/test/testsuite.qunit.html --coverage -ccb 50 -ccf 50 -ccl 50 -ccs 50</PackageJsonScriptsTestRunnerCoverage>
+    <PackageJsonScriptsTestUi5 Condition="$(PackageJsonScriptsTestUi5) == ''">ui5-test-runner --start start-coverage --url http://localhost:8080/test/testsuite.qunit.html --coverage -ccb 50 -ccf 50 -ccl 50 -ccs 50</PackageJsonScriptsTestUi5>
+    <PackageJsonScriptsTest Condition="$(PackageJsonScriptsTest) == ''">npm run lint &amp;&amp; npm run test-ui5</PackageJsonScriptsTest>
+    <PackageJsonScriptsWdi5 Condition="$(PackageJsonScriptsWdi5) == ''">wdio run ./webapp/test/e2e/\wdio.conf.ts</PackageJsonScriptsWdi5>
+    <PackageJsonDevdependenciesOpenui5Types Condition="$(PackageJsonDevdependenciesOpenui5Types) == ''">^1.143.0</PackageJsonDevdependenciesOpenui5Types>
+    <PackageJsonDevdependenciesUi5Cli Condition="$(PackageJsonDevdependenciesUi5Cli) == ''">^4.0.50</PackageJsonDevdependenciesUi5Cli>
+    <PackageJsonDevdependenciesUi5Linter Condition="$(PackageJsonDevdependenciesUi5Linter) == ''">^1.20.0</PackageJsonDevdependenciesUi5Linter>
+    <PackageJsonDevdependenciesWdioCli Condition="$(PackageJsonDevdependenciesWdioCli) == ''">^9.21.1</PackageJsonDevdependenciesWdioCli>
+    <PackageJsonDevdependenciesWdioLocalRunner Condition="$(PackageJsonDevdependenciesWdioLocalRunner) == ''">^9.21.0</PackageJsonDevdependenciesWdioLocalRunner>
+    <PackageJsonDevdependenciesWdioMochaFramework Condition="$(PackageJsonDevdependenciesWdioMochaFramework) == ''">^6.1.17</PackageJsonDevdependenciesWdioMochaFramework>
+    <PackageJsonDevdependenciesWdioSpecReporter Condition="$(PackageJsonDevdependenciesWdioSpecReporter) == ''">^9.20.0</PackageJsonDevdependenciesWdioSpecReporter>
+    <PackageJsonDevdependenciesBabelPluginIstanbul Condition="$(PackageJsonDevdependenciesBabelPluginIstanbul) == ''">^7.0.1</PackageJsonDevdependenciesBabelPluginIstanbul>
+    <PackageJsonDevdependenciesEslint Condition="$(PackageJsonDevdependenciesEslint) == ''">^9.36.0</PackageJsonDevdependenciesEslint>
+    <PackageJsonDevdependenciesGlobals Condition="$(PackageJsonDevdependenciesGlobals) == ''">^16.4.0</PackageJsonDevdependenciesGlobals>
+    <PackageJsonDevdependenciesRimraf Condition="$(PackageJsonDevdependenciesRimraf) == ''">^6.0.1</PackageJsonDevdependenciesRimraf>
+    <PackageJsonDevdependenciesTsNode Condition="$(PackageJsonDevdependenciesTsNode) == ''">^10.9.2</PackageJsonDevdependenciesTsNode>
+    <PackageJsonDevdependenciesTypescript Condition="$(PackageJsonDevdependenciesTypescript) == ''">^5.9.3</PackageJsonDevdependenciesTypescript>
+    <PackageJsonDevdependenciesTypescriptEslint Condition="$(PackageJsonDevdependenciesTypescriptEslint) == ''">^8.44.1</PackageJsonDevdependenciesTypescriptEslint>
+    <PackageJsonDevdependenciesUi5MiddlewareLivereload Condition="$(PackageJsonDevdependenciesUi5MiddlewareLivereload) == ''">^3.1.4</PackageJsonDevdependenciesUi5MiddlewareLivereload>
+    <PackageJsonDevdependenciesUi5TestRunner Condition="$(PackageJsonDevdependenciesUi5TestRunner) == ''">^5.9.1</PackageJsonDevdependenciesUi5TestRunner>
+    <PackageJsonDevdependenciesUi5ToolingTranspile Condition="$(PackageJsonDevdependenciesUi5ToolingTranspile) == ''">^3.9.2</PackageJsonDevdependenciesUi5ToolingTranspile>
+    <PackageJsonDevdependenciesWdioUi5Service Condition="$(PackageJsonDevdependenciesWdioUi5Service) == ''">^1.5.6</PackageJsonDevdependenciesWdioUi5Service>
+  </PropertyGroup>
+</Project>

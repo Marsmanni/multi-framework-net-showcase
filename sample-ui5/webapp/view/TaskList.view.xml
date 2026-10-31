@@ -1,0 +1,46 @@
+<mvc:View
+	controllerName="com.24steps.ui5sample.controller.TaskList"
+	displayBlock="true"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc">
+
+	<Page
+		id="idTaskListPage"
+		title="{i18n>taskListTitle}"
+		showNavButton="true"
+		navButtonPress=".onPageNavButtonPress">
+		<headerContent>
+			<Button
+				id="idAddTaskButton"
+				icon="sap-icon://add"
+				text="{i18n>addTaskButton}"
+				press=".onAddTaskButtonPress" />
+		</headerContent>
+		<content>
+			<List
+				id="idTasksList"
+				headerText="{i18n>taskListHeader}"
+				items="{/tasks}"
+				noDataText="{i18n>noTasksText}"
+				mode="Delete"
+				delete=".onTasksListDelete">
+				<StandardListItem
+					id="idTasksStandardListItem"
+					title="{title}"
+					description="{description}"
+					icon="sap-icon://task"
+					info="{
+						path: 'status',
+						formatter: '.formatter.formatStatusText'
+					}"
+					infoState="{
+						path: 'status',
+						formatter: '.formatter.formatStatusState'
+					}"
+					type="Detail"
+					detailPress=".onStandardListItemDetailPress" />
+			</List>
+		</content>
+	</Page>
+
+</mvc:View>

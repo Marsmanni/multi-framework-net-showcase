@@ -1,0 +1,25 @@
+<Solution>
+  <Folder Name="/Projektmappenelemente/">
+    <File Path="docs/DEPLOYMENT.MD" />
+    <File Path="README.MD" />
+  </Folder>
+  <Project Path="sample-angular/sample-angular.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="sample-react/sample-react.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="sample-ui5/sample-ui5.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="sample-vue/sample-vue.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="UI-Sample-API-NET10/UI-Sample-API-NET10.csproj" />
+  <Project Path="UI-Sample-API-NET8/UI-Sample-API-NET8.csproj" />
+  <Project Path="UI-Sample-API.Shared/UI-Sample-API.Shared.csproj" />
+</Solution>

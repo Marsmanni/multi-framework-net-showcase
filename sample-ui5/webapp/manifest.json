@@ -1,0 +1,121 @@
+{
+	"_version": "1.21.0",
+
+	"sap.app": {
+		"id": "com.24steps.ui5sample",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"applicationVersion": {
+			"version": "${version}"
+		},
+		"sourceTemplate": {
+			"id": "generator-ui5-ts-app",
+			"version": "1.1.0"
+		}
+	},
+
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "com.24steps.ui5sample.view.App",
+			"type": "XML",
+			"id": "app"
+		},
+
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		},
+
+		"dependencies": {
+			"minUI5Version": "1.143.0",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {},
+				"sap.f": {}
+			}
+		},
+
+		"handleValidation": true,
+
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "com.24steps.ui5sample.i18n.i18n",
+					"supportedLocales": ["", "de"],
+					"fallbackLocale": "",
+					"async": true
+				}
+			},
+			"config": {
+				"type": "sap.ui.model.json.JSONModel",
+				"settings": {
+					"apiBaseUrl": "http://localhost:5432"
+				}
+			}
+		},
+
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"type": "View",
+				"viewType": "XML",
+				"path": "com.24steps.ui5sample.view",
+				"controlId": "idApp",
+				"controlAggregation": "pages",
+				"transition": "slide"
+			},
+			"routes": [
+				{
+					"pattern": "",
+					"name": "home",
+					"target": "home"
+				},
+				{
+					"pattern": "weather",
+					"name": "weather",
+					"target": "weather"
+				},
+				{
+					"pattern": "tasks",
+					"name": "tasks",
+					"target": "tasks"
+				}
+			],
+			"targets": {
+				"home": {
+					"id": "home",
+					"name": "Home"
+				},
+				"weather": {
+					"id": "weather",
+					"name": "Weather"
+				},
+				"tasks": {
+					"id": "tasks",
+					"name": "TaskList"
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,62 @@
+.suntimes-card {
+  max-width: 300px;
+}
+
+.location-selector {
+  margin-bottom: 1.5rem;
+}
+
+.location-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.location-select:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.sun-times-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sun-time-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.sun-icon {
+  font-size: 2rem;
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sun-time-info {
+  flex: 1;
+}
+
+.sun-time-label {
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.sun-time-value {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #333;
+}

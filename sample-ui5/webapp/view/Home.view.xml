@@ -1,0 +1,128 @@
+<mvc:View
+	controllerName="com.24steps.ui5sample.controller.Home"
+	displayBlock="true"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc">
+
+	<Page
+		id="idHomePage"
+		title="{i18n>homeTitle}"
+		showNavButton="true"
+		navButtonPress=".onPageNavButtonPress">
+		<content>
+			<VBox class="sapUiSmallMargin">
+				<FlexBox wrap="Wrap" justifyContent="Start" alignItems="Start">
+					<!-- Welcome Card -->
+					<f:Card class="sapUiSmallMargin" width="400px">
+						<f:header>
+							<card:Header
+								xmlns:card="sap.f.cards"
+								title="{i18n>homeTitle}"
+								subtitle="{view>/welcomeSubtitle}" />
+						</f:header>
+						<f:content>
+							<VBox class="sapUiSmallMargin">
+								<Title text="{i18n>homeDescription}" level="H3" class="sapUiSmallMarginBottom" />
+								<Text text="{i18n>homeText}" class="sapUiSmallMarginBottom" />
+								
+								<VBox class="sapUiMediumMarginTop">
+									<Title text="Available Pages:" level="H4" class="sapUiSmallMarginBottom" />
+									<List>
+										<StandardListItem
+											id="idHomeNavigationStandardListItem"
+											title="{i18n>homeTitle}"
+											description="Main landing page"
+											icon="sap-icon://home"
+											type="Navigation"
+											press=".onStandardListItemPress" />
+										<StandardListItem
+											id="idWeatherNavigationStandardListItem"
+											title="{i18n>weatherTitle}"
+											description="View weather forecast data"
+											icon="sap-icon://weather-proofing"
+											type="Navigation"
+											press=".onStandardListItemPress" />
+										<StandardListItem
+											id="idTasksNavigationStandardListItem"
+											title="{i18n>taskListTitle}"
+											description="Manage your tasks"
+											icon="sap-icon://task"
+											type="Navigation"
+											press=".onStandardListItemPress" />
+									</List>
+								</VBox>
+							</VBox>
+						</f:content>
+					</f:Card>
+
+					<!-- Task number Card -->
+					<f:Card class="sapUiSmallMargin" width="300px">
+						<f:header>
+							<card:NumericHeader
+								xmlns:card="sap.f.cards"
+								title="{i18n>taskCardTitle}"
+								subtitle="{i18n>taskCardSubtitle}"
+								number="{/taskCount}"
+								scale=""
+								state="Good" />
+						</f:header>
+						<f:content>
+							<VBox class="sapUiSmallMargin">
+								<Text text="{i18n>taskCardText}" class="sapUiSmallMarginBottom" />
+								<Button
+									id="idViewAllTasksButton"
+									text="{i18n>viewTasksButton}"
+									icon="sap-icon://task"
+									press=".onViewAllTasksButtonPress"
+									type="Emphasized" />
+							</VBox>
+						</f:content>
+					</f:Card>
+
+					<!-- TicTacToe Card -->
+					<VBox id="idTicTacToeVBox" />
+
+					<!-- Sun Times Card -->
+					<f:Card class="sapUiSmallMargin" width="300px">
+						<f:header>
+							<card:Header
+								xmlns:card="sap.f.cards"
+								class="sunIconColor"
+								title="{i18n>sunTimesTitle}"
+								subtitle="{i18n>sunTimesSubtitle}"
+								iconSrc="sap-icon://light-mode" />
+						</f:header>
+						<f:content>
+							<VBox class="sapUiSmallMargin">
+								<ComboBox
+									id="idLocationsComboBox"
+									selectedKey="{/selectedLocationId}"
+									items="{/locations}"
+									change=".onLocationsComboBoxChange"
+									class="sapUiSmallMarginBottom">
+									<core:Item key="{id}" text="{name}" />
+								</ComboBox>
+								<HBox class="sapUiSmallMarginBottom">
+									<core:Icon src="sap-icon://up" size="1rem" color="#000" class="sapUiTinyMarginEnd" />
+									<VBox>
+										<Label text="{i18n>sunriseLabel}" class="sapUiTinyMarginBottom" />
+										<Text text="{path: '/sunTimes/sunrise', formatter: '.formatTime24'}" class="sapUiMediumText" />
+									</VBox>
+								</HBox>
+								<HBox>
+									<core:Icon src="sap-icon://down" size="1rem" color="#000" class="sapUiTinyMarginEnd" />
+									<VBox>
+										<Label text="{i18n>sunsetLabel}" class="sapUiTinyMarginBottom" />
+										<Text text="{path: '/sunTimes/sunset', formatter: '.formatTime24'}" class="sapUiMediumText" />
+									</VBox>
+								</HBox>
+							</VBox>
+						</f:content>
+					</f:Card>
+				</FlexBox>
+			</VBox>
+		</content>
+	</Page>
+</mvc:View>

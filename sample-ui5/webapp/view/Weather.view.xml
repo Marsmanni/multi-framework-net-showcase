@@ -1,0 +1,76 @@
+<mvc:View
+	controllerName="com.24steps.ui5sample.controller.Weather"
+	displayBlock="true"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:core="sap.ui.core"
+	core:require="{
+		formatter: 'com/24steps/ui5sample/model/formatter'
+	}">
+
+	<Page
+		title="{i18n>weatherTitle}"
+		id="idWeatherPage"
+		showNavButton="true"
+		navButtonPress=".onPageNavButtonPress">
+		<headerContent>
+			<ToolbarSpacer />
+		</headerContent>
+		<content>
+			<VBox class="sapUiSmallMargin">
+			<Button
+				text="{i18n>loadWeatherButton}"
+				press=".onLoadWeather"
+				type="Emphasized"
+				class="sapUiSmallMarginBottom" />
+			
+			<!-- Temperature Chart using Chart.js -->
+			<VBox 
+				id="idWeatherChartContainer"
+				visible="{= ${/weatherData}.length > 0}"
+				class="sapUiSmallMarginBottom">
+				<Title text="{i18n>weatherChartTitle}" level="H3" class="sapUiSmallMarginBottom" />
+				<core:HTML
+					content="&lt;canvas id='weatherCanvas' style='max-width: 800px; max-height: 300px;'&gt;&lt;/canvas&gt;" />
+			</VBox>
+
+			<Table
+				id="weatherTable"
+				headerText="{i18n>weatherTableHeader}"
+				items="{/weatherData}"
+				visible="{= ${/weatherData}.length > 0}"
+				class="sapUiSmallMarginTop">
+				<columns>
+					<Column>
+						<Text text="{i18n>weatherDateColumn}" />
+					</Column>
+					<Column>
+						<Text text="{i18n>weatherTempCColumn}" />
+					</Column>
+					<Column>
+						<Text text="{i18n>weatherTempFColumn}" />
+					</Column>
+						<Column>
+						<Text text="{i18n>weatherHumidityColumn}" />
+					</Column>
+					<Column>
+						<Text text="{i18n>weatherSummaryColumn}" />
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<Text text="{date}" />
+							<Text text="{temperatureC}" />
+							<Text text="{temperatureF}" />
+							<Text text="{humidity}" />
+							<Text text="{summary}" />
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+			</VBox>
+		</content>
+	</Page>
+
+</mvc:View>

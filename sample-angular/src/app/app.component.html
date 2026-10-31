@@ -1,0 +1,160 @@
+<div class="app-shell">
+  <header class="topbar">
+    <a class="brand" href="#" (click)="navigate('home'); $event.preventDefault()">
+      <span class="brand-mark">A</span>
+      <span>{{ t('appTitle') }}</span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <button type="button" [class.active]="page === 'home'" (click)="navigate('home')">⌂ {{ t('homeTitle') }}</button>
+      <button type="button" [class.active]="page === 'weather'" (click)="navigate('weather')">☀ {{ t('weatherTitle') }}</button>
+      <button type="button" [class.active]="page === 'tasks'" (click)="navigate('tasks')">✓ {{ t('taskListTitle') }}</button>
+    </nav>
+    <div class="header-actions">
+      <span class="backend-version">{{ backendVersion }}</span>
+      <button class="language-button" type="button" (click)="toggleLanguage()" [attr.aria-label]="language === 'en' ? 'Deutsch' : 'English'">
+        {{ language === 'en' ? 'DE' : 'EN' }}
+      </button>
+      <label class="application-switcher">
+        <span class="sr-only">{{ t('switchApplication') }}</span>
+        <select [ngModel]="currentApplication" [ngModelOptions]="{standalone: true}" (change)="switchApplication($event)" [attr.aria-label]="t('switchApplication')">
+          <option *ngFor="let application of applications" [value]="application.id">{{ application.label }}</option>
+        </select>
+      </label>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <div *ngIf="pageError" class="notice error-notice" role="alert">{{ pageError }}</div>
+    <div *ngIf="feedback" class="notice success-notice" role="status">{{ feedback }}</div>
+
+    <section *ngIf="page === 'home'" class="dashboard">
+      <div class="welcome-card card">
+        <p class="eyebrow">{{ t('homeDescription') }}</p>
+        <h1>{{ t('welcomeTitle') }}</h1>
+        <p class="subtitle">{{ welcomeSubtitle }}</p>
+        <p>{{ t('homeText') }}</p>
+        <div class="dashboard-links">
+          <button type="button" class="link-card" (click)="navigate('weather')">
+            <span class="link-icon">🌤️</span><strong>{{ t('weatherTitle') }}</strong><small>{{ t('weatherDescription') }}</small>
+          </button>
+          <button type="button" class="link-card" (click)="navigate('tasks')">
+            <span class="link-icon">✓</span><strong>{{ t('taskListTitle') }}</strong><small>{{ t('tasksDescription') }}</small>
+          </button>
+        </div>
+      </div>
+
+      <section class="card task-summary">
+        <div class="summary-title">
+          <div><h2>{{ t('taskCardTitle') }}</h2><p class="muted">{{ t('taskCardSubtitle') }}</p></div>
+          <span class="task-count">{{ taskCount }}</span>
+        </div>
+        <p>{{ t('taskCardText') }}</p>
+        <button class="primary-button" type="button" (click)="navigate('tasks')">✓ {{ t('viewTasksButton') }}</button>
+      </section>
+
+      <section class="card game-card">
+        <div class="card-heading"><div><h2>⭕ {{ t('ticTacToeTitle') }}</h2><p class="muted">{{ t('ticTacToeSubtitle') }}</p></div></div>
+        <div class="game-info"><span>{{ t('currentPlayerLabel') }}</span><strong>{{ currentPlayer }}</strong></div>
+        <p *ngIf="gameStatus" class="game-status" role="status">{{ gameStatus }}</p>
+        <div class="game-board" role="group" [attr.aria-label]="t('ticTacToeTitle')">
+          <button *ngFor="let cell of board; let i = index" class="game-cell" type="button" [disabled]="!!cell || isGameOver || currentPlayer !== 'X'" [attr.aria-label]="'Cell ' + (i + 1) + (cell ? ': ' + cell : '')" (click)="playCell(i)">{{ cell }}</button>
+        </div>
+        <div class="game-actions">
+          <button class="primary-button" type="button" (click)="resetGame()">↻ {{ t('resetGameButton') }}</button>
+          <button class="secondary-button" type="button" (click)="computerStarts()">🤖 {{ t('computerStartsButton') }}</button>
+        </div>
+      </section>
+
+      <section class="card sun-card">
+        <div class="card-heading"><div><h2>☀️ {{ t('sunTimesTitle') }}</h2><p class="muted">{{ t('sunTimesSubtitle') }}</p></div></div>
+        <label class="field-label" for="sun-location">{{ t('selectLocation') }}</label>
+        <select id="sun-location" class="form-control" [ngModel]="selectedLocationId" (ngModelChange)="loadSunTimes($event)">
+          <option *ngFor="let location of locations" [value]="location.id">{{ location.name }}</option>
+        </select>
+        <div class="sun-times">
+          <div><span class="sun-icon">🌅</span><span class="muted">{{ t('sunriseLabel') }}</span><strong>{{ sunTimes ? formatTime(sunTimes.sunrise) : '—' }}</strong></div>
+          <div><span class="sun-icon">🌇</span><span class="muted">{{ t('sunsetLabel') }}</span><strong>{{ sunTimes ? formatTime(sunTimes.sunset) : '—' }}</strong></div>
+        </div>
+      </section>
+    </section>
+
+    <section *ngIf="page === 'weather'" class="page-section">
+      <div class="page-heading">
+        <div><p class="eyebrow">{{ t('weatherTitle') }}</p><h1>{{ t('weatherTitle') }}</h1></div>
+        <button class="primary-button" type="button" (click)="loadWeather()" [disabled]="isWeatherLoading">
+          🌤️ {{ isWeatherLoading ? t('loading') : t('loadWeatherButton') }}
+        </button>
+      </div>
+      <section *ngIf="weatherData.length" class="card chart-card">
+        <h2>{{ t('weatherChartTitle') }}</h2>
+        <div class="chart-container"><canvas id="weather-chart" role="img" [attr.aria-label]="t('weatherChartTitle')"></canvas></div>
+      </section>
+      <section *ngIf="weatherData.length" class="card table-card">
+        <h2>{{ t('weatherTableHeader') }}</h2>
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>{{ t('weatherDateColumn') }}</th><th>{{ t('weatherTempCColumn') }}</th>
+              <th>{{ t('weatherTempFColumn') }}</th><th>{{ t('weatherHumidityColumn') }}</th>
+              <th>{{ t('weatherSummaryColumn') }}</th>
+            </tr></thead>
+            <tbody><tr *ngFor="let forecast of weatherData">
+              <td>{{ forecast.date | date:'mediumDate' }}</td><td>{{ forecast.temperatureC }}°C</td>
+              <td>{{ forecast.temperatureF }}°F</td><td>{{ forecast.humidity }}%</td><td>{{ forecast.summary || '—' }}</td>
+            </tr></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <section *ngIf="page === 'tasks'" class="page-section">
+      <div class="page-heading">
+        <div><p class="eyebrow">{{ t('taskListTitle') }}</p><h1>{{ t('taskListHeader') }}</h1></div>
+        <button class="primary-button" type="button" (click)="openCreateTask()">＋ {{ t('addTaskButton') }}</button>
+      </div>
+      <div *ngIf="!tasks.length" class="card empty-state">{{ t('noTasksText') }}</div>
+      <div *ngIf="tasks.length" class="tasks-grid">
+        <article *ngFor="let task of tasks" class="card task-card">
+          <div class="task-heading">
+            <h2>{{ task.title }}</h2>
+            <span class="status-badge" [ngClass]="{'status-open': task.status === taskStatuses.Open, 'status-progress': task.status === taskStatuses.InProgress, 'status-completed': task.status === taskStatuses.Completed}">{{ taskStatusLabel(task.status) }}</span>
+          </div>
+          <p class="task-description">{{ task.description }}</p>
+          <p *ngIf="task.dueDate" class="task-date">{{ t('taskDueDateLabel') }}: {{ task.dueDate | date:'mediumDate' }}</p>
+          <div class="task-actions">
+            <button type="button" class="secondary-button" (click)="openEditTask(task)">✎ {{ t('editTaskDialogTitle') }}</button>
+            <button type="button" class="danger-button" (click)="deleteTask(task)">⌫ {{ t('deleteButton') }}</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div *ngIf="isTaskDialogOpen" class="dialog-backdrop" (click)="closeTaskDialog()">
+    <section class="dialog card" role="dialog" aria-modal="true" [attr.aria-label]="editingTask ? t('editTaskDialogTitle') : t('createTaskDialogTitle')" (click)="$event.stopPropagation()">
+      <div class="dialog-heading">
+        <h2>{{ editingTask ? t('editTaskDialogTitle') : t('createTaskDialogTitle') }}</h2>
+        <button class="icon-button" type="button" [attr.aria-label]="t('cancelButton')" (click)="closeTaskDialog()">×</button>
+      </div>
+      <form (ngSubmit)="saveTask()">
+        <label class="field-label" for="task-title">{{ t('taskTitleLabel') }} *</label>
+        <input id="task-title" class="form-control" name="title" [(ngModel)]="taskForm.title" [placeholder]="t('taskTitlePlaceholder')" required>
+        <label class="field-label" for="task-description">{{ t('taskDescriptionLabel') }} *</label>
+        <textarea id="task-description" class="form-control" name="description" [(ngModel)]="taskForm.description" [placeholder]="t('taskDescriptionPlaceholder')" rows="4" required></textarea>
+        <label class="field-label" for="task-due-date">{{ t('taskDueDateLabel') }}</label>
+        <input id="task-due-date" class="form-control" name="dueDate" type="date" [(ngModel)]="taskForm.dueDate">
+        <label class="field-label" for="task-status">{{ t('taskStatusLabel') }}</label>
+        <select id="task-status" class="form-control" name="status" [(ngModel)]="taskForm.status">
+          <option [ngValue]="taskStatuses.Open">{{ t('taskStatusOpen') }}</option>
+          <option [ngValue]="taskStatuses.InProgress">{{ t('taskStatusInProgress') }}</option>
+          <option [ngValue]="taskStatuses.Completed">{{ t('taskStatusCompleted') }}</option>
+        </select>
+        <p *ngIf="taskError" class="notice error-notice" role="alert">{{ taskError }}</p>
+        <div class="dialog-actions">
+          <button class="secondary-button" type="button" (click)="closeTaskDialog()">{{ t('cancelButton') }}</button>
+          <button class="primary-button" type="submit" [disabled]="isSavingTask">{{ isSavingTask ? t('loading') : editingTask ? t('saveButton') : t('createButton') }}</button>
+        </div>
+      </form>
+    </section>
+  </div>
+</div>

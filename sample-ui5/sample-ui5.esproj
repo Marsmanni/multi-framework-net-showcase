@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.4110890">
+  <PropertyGroup>
+    <StartupCommand>npm run build</StartupCommand>
+    <JavaScriptTestRoot>src\</JavaScriptTestRoot>
+    <!-- Folder where production build objects will be placed -->
+    <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
+  </PropertyGroup>
+</Project>

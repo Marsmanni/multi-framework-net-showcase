@@ -1,0 +1,43 @@
+<mvc:View
+	controllerName="com.24steps.ui5sample.controller.App"
+	displayBlock="true"
+	xmlns="sap.m"
+	xmlns:f="sap.f"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc">
+
+	<f:ShellBar
+		id="idShellBar"
+		title="UI5 Sample Application"
+		secondTitle="{/backendVersion}"
+		homeIcon="./images/icon.svg"
+		homeIconPressed=".onShellBarHomeIconPressed"
+		homeIconTooltip="{i18n>homeIconTooltip}"
+		showNavButton="false"
+		showMenuButton="true"
+		menuButtonPressed=".onShellBarMenuButtonPressed">
+		<f:additionalContent>
+			<Button
+				icon="sap-icon://world"
+				text="{/selectedLanguage}"
+				press=".onLanguageButtonPress"
+				tooltip="{i18n>changeLanguage}" />
+			<Select
+				selectedKey="{/currentApplication}"
+				change=".onApplicationSelectChange"
+				tooltip="{i18n>switchApplication}"
+				width="110px">
+				<core:Item key="react" text="React" />
+				<core:Item key="ui5" text="SAPUI5" />
+				<core:Item key="vue" text="Vue" />
+				<core:Item key="angular" text="Angular" />
+			</Select>
+		</f:additionalContent>
+		<f:profile>
+			<Avatar initials="UI" />
+		</f:profile>
+	</f:ShellBar>
+
+	<App id="idApp" />
+
+</mvc:View>

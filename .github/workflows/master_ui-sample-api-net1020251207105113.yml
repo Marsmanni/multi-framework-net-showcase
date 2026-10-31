@@ -1,0 +1,107 @@
+﻿# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy ASP.Net Core app to Azure Web App - UI-Sample-API-NET1020251207105113
+
+on:
+  push:
+    paths:
+      - 'UI-Sample-API-NET10/**'
+      - 'UI-Sample-API-NET8/**'
+      - 'UI-Sample-API.Shared/**'
+    branches:
+      - main
+  workflow_dispatch:
+
+# Setze die minimalen Berechtigungen am Workflow-Level
+permissions:
+  id-token: write   # erlaubt OIDC-Token-Anforderung
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read #This is required for actions/checkout
+
+    steps:
+      - run: echo "ref is $GITHUB_REF"
+
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Build with dotnet (target net10.0)
+        run: dotnet build UI-Sample-API-NET10/UI-Sample-API-NET10.csproj -f net10.0
+        
+      - name: dotnet publish (target net10.0)
+        run: dotnet publish UI-Sample-API-NET10/UI-Sample-API-NET10.csproj -c Release -f net10.0 -o "${{env.DOTNET_ROOT}}/myapp"
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          # entferne führenden Punkt — erleichtert Pfadauflösung beim Download
+          name: dotnet-app
+          path: ${{env.DOTNET_ROOT}}/myapp
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          # muss mit dem oben angegebenen Namen übereinstimmen
+          name: dotnet-app
+
+      - name: "Debug: Liste heruntergeladene Dateien und bestimme PACKAGE_PATH"
+        shell: pwsh
+        run: |
+          Write-Host "Arbeitsverzeichnis: $PWD"
+          if (Test-Path -Path ".\dotnet-app" -PathType Container) {
+            Write-Host "Ordner 'dotnet-app' existiert. Inhalt:"
+            Get-ChildItem -Path .\dotnet-app -Recurse | Sort-Object FullName | Format-Table -AutoSize
+            $packagePath = ".\dotnet-app"
+          } else {
+            Write-Host "Ordner 'dotnet-app' nicht gefunden. Liste aktuelles Verzeichnis:"
+            Get-ChildItem -Recurse | Sort-Object FullName | Format-Table -AutoSize
+            # Verwende das aktuelle Arbeitsverzeichnis als Package-Pfad
+            $packagePath = "$PWD"
+          }
+          Write-Host "PACKAGE_PATH will be set to: $packagePath"
+          Add-Content -Path $env:GITHUB_ENV -Value "PACKAGE_PATH=$packagePath"
+
+      - name: "Debug: Prüfe Azure‑Secrets (nur Präsenz/Länge)"
+        shell: bash
+        run: |
+          echo "AZURE_CLIENT_ID present: "
+          if [ -z "${{ secrets.AZURE_CLIENT_ID }}" ]; then echo "MISSING"; else echo "PRESENT (len=$(printf '%s' "${{ secrets.AZURE_CLIENT_ID }}" | wc -c))"; fi
+          echo "AZURE_TENANT_ID present: "
+          if [ -z "${{ secrets.AZURE_TENANT_ID }}" ]; then echo "MISSING"; else echo "PRESENT (len=$(printf '%s' "${{ secrets.AZURE_TENANT_ID }}" | wc -c))"; fi
+          echo "AZURE_SUBSCRIPTION_ID present: "
+          if [ -z "${{ secrets.AZURE_SUBSCRIPTION_ID }}" ]; then echo "MISSING"; else echo "PRESENT (len=$(printf '%s' "${{ secrets.AZURE_SUBSCRIPTION_ID }}" | wc -c))"; fi
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with: 
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          enable-AzPSSession: true
+          audience: api://AzureADTokenExchange
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'UI-Sample-API-NET1020251207105113'
+          slot-name: 'Production'
+          package: ${{ env.PACKAGE_PATH }}
+
+
+
+
